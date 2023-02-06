@@ -37,13 +37,12 @@ public class Page : MonoBehaviour
         fullyOpened
             .TakeUntilDestroy(gameObject)
             .Where(x => fullyOpened.Value)
-            .Subscribe(_ => book.SetInteractText());
+            .Subscribe(_ => book.SetInteract());
 
         fullyClosed
             .TakeUntilDestroy(gameObject)
             .Where(x => fullyClosed.Value)
-            .Subscribe(_ => book.SetInteractText());
-
+            .Subscribe(_ => book.SetInteract());
 
         book.OnPageChanged += CancelInteraction;
     }

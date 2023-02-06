@@ -32,6 +32,7 @@ public class Book : MonoBehaviour
     private Quaternion initialRotation;
 
     private bool isPositioned = false;
+    private bool canInteract = false;
 
     public Action OnPageChanged;
 
@@ -44,7 +45,7 @@ public class Book : MonoBehaviour
 
     private void Start()
     {
-        SetInteractText(false);
+        SetInteract(false);
 
         totalPages = pages.Length;
         pageAngle = new float[totalPages];
@@ -69,7 +70,7 @@ public class Book : MonoBehaviour
             .Subscribe(_ => PositioningBook());
 
         BookManager.Instance.OnBookChanged += ResetBook;
-        OnPageChanged += () => SetInteractText(false);
+        OnPageChanged += () => SetInteract(false);
     }
 
     private void ControllingBook()
@@ -98,7 +99,7 @@ public class Book : MonoBehaviour
                 pageAngle[i] = Mathf.Clamp(pageAngle[i], pageAngleMin[i], pageAngleMax[i]);
 
                 pages[i].fullyOpened.Value = pageAngle[i] >= pageAngleMax[i];
-                pages[i].fullyClosed.Value = pageAngle[i] <= pageAngleMin[i];   
+                pages[i].fullyClosed.Value = pageAngle[i] <= pageAngleMin[i];
 
                 pages[i].transform.localEulerAngles = new Vector3(0, pageAngle[i], 0);
             }
@@ -130,6 +131,7 @@ public class Book : MonoBehaviour
                 break;
         }
 
+        canInteract = false;
         OnPageChanged?.Invoke();
     }
 
@@ -162,7 +164,7 @@ public class Book : MonoBehaviour
 
             isPositioned = false;
 
-            SetInteractText(false);
+            SetInteract(false);
 
             transform.position = initialPosition;
             transform.rotation = initialRotation;
@@ -170,6 +172,7 @@ public class Book : MonoBehaviour
             for (int i = 0; i < totalPages; i++)
             {
                 pages[i].fullyOpened.Value = false;
+                pages[i].fullyClosed.Value = true;
                 pages[i].CancelInteraction();
             }
         }
@@ -181,17 +184,25 @@ public class Book : MonoBehaviour
     {
         if (BookManager.Instance.selectedBook != this) return;
 
-        if (Input.GetKeyDown(KeyCode.F) && TryInteractWIthPage())
+        if (Input.GetKeyDown(KeyCode.F) && TryInteractWIthPage() && canInteract)
         {
-            if (pages[currentPage].fullyOpened.Value || pages[currentPage - 1].fullyClosed.Value)
-                pages[currentPage].Interaction();
+            pages[currentPage].Interaction();
         }
     }
 
-    public void SetInteractText(bool Set = true)
+    public void SetInteract(bool Set = true)
     {
-        if (TryInteractWIthPage()) interactTxt.SetActive(Set);
-        else interactTxt.SetActive(false);
+        if (TryInteractWIthPage())
+        {
+            interactTxt.SetActive(Set);
+            canInteract = Set;
+        }
+
+        else
+        {
+            interactTxt.SetActive(false);
+            canInteract = false;
+        }
     }
 
     private bool TryInteractWIthPage()
