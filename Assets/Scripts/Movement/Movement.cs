@@ -19,8 +19,6 @@ public class Movement : MonoBehaviour
     {
         MoveDir = Vector3.zero;
         controller = GetComponent<CharacterController>();
-
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     void Update()

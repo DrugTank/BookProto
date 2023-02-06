@@ -6,11 +6,13 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
 
-    public Transform bookAimingTransform;
-    public Transform playerTransform;
+    public bool lockCursor;
 
     private void Awake()
     {
         Instance = this;
+
+        if(lockCursor)
+            Cursor.lockState = CursorLockMode.Locked;
     }
 }

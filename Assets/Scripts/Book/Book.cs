@@ -1,11 +1,19 @@
+using System;
 using UniRx;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class Book : MonoBehaviour
 {
     [SerializeField]
-    private Transform[] pages;
+    private GameObject interactTxt;
+
+    [SerializeField]
+    private Transform viewPosition;
+
+    public Page[] pages;
+
+    [SerializeField]
+    private float positioningSpeed;
 
     [SerializeField]
     private float pageTurningSpeed;
@@ -23,8 +31,21 @@ public class Book : MonoBehaviour
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
+    private bool isPositioned = false;
+
+    public Action OnPageChanged;
+
+    private void Awake()
+    {
+        if (viewPosition == null) viewPosition = transform.parent; // this logic could be different
+
+        pages = GetComponentsInChildren<Page>();
+    }
+
     private void Start()
     {
+        SetInteractText(false);
+
         totalPages = pages.Length;
         pageAngle = new float[totalPages];
         pageAngleMin = new float[totalPages];
@@ -35,8 +56,8 @@ public class Book : MonoBehaviour
 
         for (int i = 0; i < totalPages; i++)
         {
-            pageAngleMin[i] = pages[i].localEulerAngles.y;
-            pageAngleMax[i] = pages[i].localEulerAngles.y + 170;
+            pageAngleMin[i] = pages[i].transform.localEulerAngles.y;
+            pageAngleMax[i] = pages[i].transform.localEulerAngles.y + 170;
         }
 
         Observable.EveryGameObjectUpdate()
@@ -48,6 +69,7 @@ public class Book : MonoBehaviour
             .Subscribe(_ => PositioningBook());
 
         BookManager.Instance.OnBookChanged += ResetBook;
+        OnPageChanged += () => SetInteractText(false);
     }
 
     private void ControllingBook()
@@ -57,13 +79,28 @@ public class Book : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Q)) TurnPage(1);
             if (Input.GetKeyDown(KeyCode.E)) TurnPage(-1);
 
+            InteractionWithPage();
+
             for (int i = 0; i < totalPages; i++)
             {
-                if (currentPage >= i) pageAngle[i] += Time.deltaTime * pageTurningSpeed;
-                else pageAngle[i] -= Time.deltaTime * pageTurningSpeed;
+                if (currentPage >= i)
+                {
+                    if (pageAngle[i] < pageAngleMax[i])
+                        pageAngle[i] += Time.deltaTime * pageTurningSpeed;
+                }
+
+                else
+                {
+                    if (pageAngle[i] > pageAngleMin[i])
+                        pageAngle[i] -= Time.deltaTime * pageTurningSpeed;
+                }
 
                 pageAngle[i] = Mathf.Clamp(pageAngle[i], pageAngleMin[i], pageAngleMax[i]);
-                pages[i].localEulerAngles = new Vector3(0, pageAngle[i], 0);
+
+                pages[i].fullyOpened.Value = pageAngle[i] >= pageAngleMax[i];
+                pages[i].fullyClosed.Value = pageAngle[i] <= pageAngleMin[i];   
+
+                pages[i].transform.localEulerAngles = new Vector3(0, pageAngle[i], 0);
             }
         }
 
@@ -71,10 +108,11 @@ public class Book : MonoBehaviour
         {
             for (int i = 0; i < totalPages; i++)
             {
-                pageAngle[i] -= Time.deltaTime * pageTurningSpeed;
+                if (pageAngle[i] > pageAngleMin[i])
+                    pageAngle[i] -= Time.deltaTime * pageTurningSpeed;
 
                 pageAngle[i] = Mathf.Clamp(pageAngle[i], pageAngleMin[i], pageAngleMax[i]);
-                pages[i].localEulerAngles = new Vector3(0, pageAngle[i], 0);
+                pages[i].transform.localEulerAngles = new Vector3(0, pageAngle[i], 0);
             }
         }
     }
@@ -91,18 +129,29 @@ public class Book : MonoBehaviour
                 if (currentPage > -1) currentPage--;
                 break;
         }
+
+        OnPageChanged?.Invoke();
     }
 
     private void PositioningBook()
     {
         if (BookManager.Instance.selectedBook != this) return;
 
-        if (Vector3.Distance(transform.position, GameManager.Instance.bookAimingTransform.position) > 1.5f)
+        if (Vector3.Distance(transform.position, viewPosition.position) > 0.01f && !isPositioned)
         {
-            transform.position = Vector3.Lerp(transform.position, GameManager.Instance.bookAimingTransform.position + (Vector3.up * 0.5f), Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, viewPosition.position, positioningSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, viewPosition.rotation, positioningSpeed * Time.deltaTime);
         }
 
-        transform.LookAt(GameManager.Instance.playerTransform.position + (Vector3.up * 0.5f));
+        else
+        {
+            if (isPositioned) return;
+
+            isPositioned = true;
+
+            transform.position = viewPosition.position;
+            transform.rotation = viewPosition.rotation;
+        }
     }
 
     private Book ResetBook()
@@ -111,10 +160,43 @@ public class Book : MonoBehaviour
         {
             currentPage = -1;
 
+            isPositioned = false;
+
+            SetInteractText(false);
+
             transform.position = initialPosition;
             transform.rotation = initialRotation;
+
+            for (int i = 0; i < totalPages; i++)
+            {
+                pages[i].fullyOpened.Value = false;
+                pages[i].CancelInteraction();
+            }
         }
 
         return this;
+    }
+
+    private void InteractionWithPage()
+    {
+        if (BookManager.Instance.selectedBook != this) return;
+
+        if (Input.GetKeyDown(KeyCode.F) && TryInteractWIthPage())
+        {
+            if (pages[currentPage].fullyOpened.Value || pages[currentPage - 1].fullyClosed.Value)
+                pages[currentPage].Interaction();
+        }
+    }
+
+    public void SetInteractText(bool Set = true)
+    {
+        if (TryInteractWIthPage()) interactTxt.SetActive(Set);
+        else interactTxt.SetActive(false);
+    }
+
+    private bool TryInteractWIthPage()
+    {
+        if (currentPage < totalPages - 1 && currentPage > -1) return true;
+        else return false;
     }
 }
