@@ -21,7 +21,7 @@ public class BookSelection : MonoBehaviour
             {
                 if (hit.transform.TryGetComponent(out Book book))
                 {
-                    BookManager.Instance.SetSelectedBook(book);
+                    if (book != BookManager.Instance.selectedBook) BookManager.Instance.SetSelectedBook(book);
                 }
             }
         }

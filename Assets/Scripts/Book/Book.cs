@@ -8,7 +8,7 @@ public class Book : MonoBehaviour
     private GameObject interactTxt;
 
     [SerializeField]
-    private Transform viewPosition;
+    private Transform[] viewPosition;
 
     public Page[] pages;
 
@@ -31,14 +31,16 @@ public class Book : MonoBehaviour
     private Vector3 initialPosition;
     private Quaternion initialRotation;
 
-    private bool isPositioned = false;
+    private bool isPositioned1 = false;
+    private bool isPositioned2 = false;
     private bool canInteract = false;
+    private bool canTurn = false;
 
     public Action OnPageChanged;
 
     private void Awake()
     {
-        if (viewPosition == null) viewPosition = transform.parent; // this logic could be different
+        if (viewPosition == null) viewPosition[1] = transform.parent; // this logic could be different
 
         pages = GetComponentsInChildren<Page>();
     }
@@ -120,6 +122,8 @@ public class Book : MonoBehaviour
 
     public void TurnPage(int direction)
     {
+        if (!canTurn) return;
+
         switch (direction)
         {
             case 1:
@@ -131,7 +135,6 @@ public class Book : MonoBehaviour
                 break;
         }
 
-        canInteract = false;
         OnPageChanged?.Invoke();
     }
 
@@ -139,30 +142,43 @@ public class Book : MonoBehaviour
     {
         if (BookManager.Instance.selectedBook != this) return;
 
-        if (Vector3.Distance(transform.position, viewPosition.position) > 0.01f && !isPositioned)
+        if (Vector3.Distance(transform.position, viewPosition[0].position) > 0.05f && !isPositioned1)
         {
-            transform.position = Vector3.Lerp(transform.position, viewPosition.position, positioningSpeed * Time.deltaTime);
-            transform.rotation = Quaternion.Lerp(transform.rotation, viewPosition.rotation, positioningSpeed * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, viewPosition[0].position, positioningSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, viewPosition[0].rotation, positioningSpeed * Time.deltaTime);
         }
 
-        else
+        else if (!isPositioned2) 
         {
-            if (isPositioned) return;
+            isPositioned1 = true;
 
-            isPositioned = true;
+            if (Vector3.Distance(transform.position, viewPosition[1].position) > 0.01f && !isPositioned2)
+            {
+                transform.position = Vector3.Lerp(transform.position, viewPosition[1].position, positioningSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, viewPosition[1].rotation, positioningSpeed * Time.deltaTime);
+            }
 
-            transform.position = viewPosition.position;
-            transform.rotation = viewPosition.rotation;
+            else
+            {
+                isPositioned2 = true;
+                canInteract = true;
+                canTurn = true;
+
+                transform.position = viewPosition[1].position;
+                transform.rotation = viewPosition[1].rotation;
+            }
         }
     }
 
-    private Book ResetBook()
+    private void ResetBook()
     {
         if (BookManager.Instance.selectedBook != this)
         {
             currentPage = -1;
 
-            isPositioned = false;
+            isPositioned1 = false;
+            isPositioned2 = false;
+            canTurn = false;
 
             SetInteract(false);
 
@@ -176,8 +192,6 @@ public class Book : MonoBehaviour
                 pages[i].CancelInteraction();
             }
         }
-
-        return this;
     }
 
     private void InteractionWithPage()

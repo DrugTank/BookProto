@@ -10,6 +10,8 @@ public enum InteractionType
     Video,
     Particle,
     Sound,
+    Effect,
+    Grabbable
 }
 
 public class Page : MonoBehaviour
@@ -26,6 +28,7 @@ public class Page : MonoBehaviour
     public GameObject interactableObject;
     public ParticleSystem particle;
     public AudioSource audioSource;
+    public Grabbable grabbableObject;
 
     private void Awake()
     {
@@ -71,6 +74,10 @@ public class Page : MonoBehaviour
             case InteractionType.Sound:
                 audioSource.Play();
                 break;
+
+            case InteractionType.Grabbable:
+                grabbableObject.gameObject.SetActive(true);
+                break;
         }
     }
 
@@ -88,6 +95,10 @@ public class Page : MonoBehaviour
 
             case InteractionType.Sound:
                 audioSource.Stop();
+                break;
+
+            case InteractionType.Grabbable:
+                grabbableObject.gameObject.SetActive(false);
                 break;
         }
     }

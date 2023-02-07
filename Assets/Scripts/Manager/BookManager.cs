@@ -6,7 +6,7 @@ public class BookManager : MonoBehaviour
 {
     public static BookManager Instance { get; private set; }
 
-    public Func<Book> OnBookChanged;
+    public Action OnBookChanged;
 
     public Book selectedBook;
 
