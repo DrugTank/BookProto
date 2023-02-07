@@ -76,6 +76,7 @@ public class Page : MonoBehaviour
                 break;
 
             case InteractionType.Grabbable:
+                grabbableObject.gameObject.SetActive(false);
                 grabbableObject.gameObject.SetActive(true);
                 break;
         }
