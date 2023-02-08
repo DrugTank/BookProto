@@ -17,22 +17,41 @@ public enum InteractionType
 public class Page : MonoBehaviour
 {
     private Book book;
+    private Animator animator;
 
+    [SerializeField]
+    private bool hasAnimation;
+
+    [Header("Page's material change")]
+    public bool automaticallyChangeMaterial;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
+
+    [Header("Select type you want")]
     public InteractionType interactionType;
 
+    [HideInInspector]
     public ReactiveProperty<bool> fullyOpened = new ReactiveProperty<bool>(false);
+    [HideInInspector]
     public ReactiveProperty<bool> fullyClosed = new ReactiveProperty<bool>(false);
 
     // Components
+    [Header("Drag and Drop proper component, Match with type")]
     public VideoPlayer videoPlayer;
     public GameObject interactableObject;
     public ParticleSystem particle;
     public AudioSource audioSource;
     public Grabbable grabbableObject;
 
+    private readonly int RL = Animator.StringToHash("RL");
+    private readonly int LR = Animator.StringToHash("LR");
+
     private void Awake()
     {
         book = GetComponentInParent<Book>();
+
+        if (hasAnimation) animator = GetComponent<Animator>();
+
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();  
     }
 
     private void Start()
@@ -102,5 +121,26 @@ public class Page : MonoBehaviour
                 grabbableObject.gameObject.SetActive(false);
                 break;
         }
+    }
+
+    public void TriggerAnimation(int direction)
+    {
+        if (!hasAnimation) return;
+
+        switch (direction)
+        {
+            case 1:
+                animator.SetTrigger(RL);
+                break;
+
+            case -1:
+                animator.SetTrigger(LR);
+                break;
+        }
+    }
+
+    public void ChangeMaterial(Material material)
+    {
+        if(automaticallyChangeMaterial) skinnedMeshRenderer.material = material;
     }
 }

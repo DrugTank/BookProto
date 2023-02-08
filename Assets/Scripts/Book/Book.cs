@@ -4,24 +4,33 @@ using UnityEngine;
 
 public class Book : MonoBehaviour
 {
+    [Header("Text with 'Press Button F' ")]
     [SerializeField]
     private GameObject interactTxt;
 
+    [Header("Drag and Drop positions you want to lerp")]
     [SerializeField]
     private Transform[] viewPosition;
 
+    [Header("If you added <Page> script in children, don't need to manually set this")]
     public Page[] pages;
 
+    [Header("Speed")]
     [SerializeField]
     private float positioningSpeed;
-
     [SerializeField]
     private float pageTurningSpeed;
 
+    [Header("Material you wanna change all")]
+    [SerializeField]
+    private bool changeMaterialAutomatically;
+    [SerializeField]
+    private Material material;
+
+    [Header("You should manually set this to -1")]
     [SerializeField]
     private int currentPage;
 
-    [SerializeField]
     private int totalPages;
 
     private float[] pageAngle;
@@ -33,6 +42,9 @@ public class Book : MonoBehaviour
 
     private bool isPositioned1 = false;
     private bool isPositioned2 = false;
+    private bool isReturning1 = false;
+    private bool isReturning2 = false;
+    private bool fullyPositioned = true;
     private bool canInteract = false;
     private bool canTurn = false;
 
@@ -62,6 +74,8 @@ public class Book : MonoBehaviour
             pageAngleMin[i] = pages[i].transform.localEulerAngles.y;
             pageAngleMax[i] = pages[i].transform.localEulerAngles.y + 170;
         }
+
+        ChangeMaterial();
 
         Observable.EveryGameObjectUpdate()
             .TakeUntilDestroy(gameObject)
@@ -117,6 +131,29 @@ public class Book : MonoBehaviour
                 pageAngle[i] = Mathf.Clamp(pageAngle[i], pageAngleMin[i], pageAngleMax[i]);
                 pages[i].transform.localEulerAngles = new Vector3(0, pageAngle[i], 0);
             }
+
+/*            if (transform.position == initialPosition || fullyPositioned) return;
+
+            if (Vector3.Distance(transform.position, viewPosition[0].position) > 0.05f && !isReturning1)
+            {
+                transform.position = Vector3.Lerp(transform.position, viewPosition[0].position, positioningSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, viewPosition[0].rotation, positioningSpeed * Time.deltaTime);
+            }
+
+            else if (Vector3.Distance(transform.position, initialPosition) > 0.01f && !isReturning2)
+            {
+                isReturning1 = true;
+                transform.position = Vector3.Lerp(transform.position, initialPosition, positioningSpeed * Time.deltaTime);
+                transform.rotation = Quaternion.Lerp(transform.rotation, initialRotation, positioningSpeed * Time.deltaTime);
+            }
+
+            else
+            {
+                isReturning2 = true;
+                fullyPositioned = false;
+                transform.position = initialPosition;
+                transform.rotation = initialRotation;
+            }*/
         }
     }
 
@@ -128,10 +165,12 @@ public class Book : MonoBehaviour
         {
             case 1:
                 if (currentPage < totalPages - 1) currentPage++;
+                pages[currentPage].TriggerAnimation(1);
                 break;
 
             case -1:
                 if (currentPage > -1) currentPage--;
+                pages[currentPage + 1].TriggerAnimation(-1);
                 break;
         }
 
@@ -148,7 +187,7 @@ public class Book : MonoBehaviour
             transform.rotation = Quaternion.Lerp(transform.rotation, viewPosition[0].rotation, positioningSpeed * Time.deltaTime);
         }
 
-        else if (!isPositioned2) 
+        else if (!isPositioned2)
         {
             isPositioned1 = true;
 
@@ -187,6 +226,7 @@ public class Book : MonoBehaviour
 
             for (int i = 0; i < totalPages; i++)
             {
+                //pages[i].TriggerAnimation(-1);
                 pages[i].fullyOpened.Value = false;
                 pages[i].fullyClosed.Value = true;
                 pages[i].CancelInteraction();
@@ -223,5 +263,16 @@ public class Book : MonoBehaviour
     {
         if (currentPage < totalPages - 1 && currentPage > -1) return true;
         else return false;
+    }
+
+    private void ChangeMaterial()
+    {
+        if (changeMaterialAutomatically)
+        {
+            for (int i = 0; i < totalPages; i++)
+            {
+                pages[i].ChangeMaterial(material);
+            }
+        }
     }
 }
