@@ -1,5 +1,36 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &4969477238522511267
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 912882853774308522}
+  m_Layer: 6
+  m_Name: ViewPosition(First)
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &912882853774308522
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4969477238522511267}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.7, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4988410177807068431}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &4988410177787235176
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,11 +326,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4988410177807068430}
-  m_LocalRotation: {x: 0.22129546, y: -0.64771307, z: -0.20486467, w: 0.69966173}
-  m_LocalPosition: {x: 0.892, y: 1.375, z: -0.036}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
+  - {fileID: 912882853774308522}
   - {fileID: 4988410178336083097}
   - {fileID: 4988410178584775572}
   - {fileID: 4988410178540665828}
@@ -314,7 +346,7 @@ Transform:
   - {fileID: 4988410179360095187}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 118.097, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4988410177807068425
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -328,12 +360,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   interactTxt: {fileID: 4988410178460665808}
-  viewPosition: {fileID: 0}
+  viewPosition:
+  - {fileID: 912882853774308522}
   pages: []
   positioningSpeed: 2
   pageTurningSpeed: 150
+  changeMaterialAutomatically: 0
+  material: {fileID: 0}
   currentPage: -1
-  totalPages: 0
 --- !u!65 &4988410177807068424
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -513,7 +547,7 @@ Transform:
   m_Children:
   - {fileID: 4988410178838336052}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 9
+  m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 2, z: 0}
 --- !u!114 &4988410177860989769
 MonoBehaviour:
@@ -527,13 +561,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 0}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410177899337812
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,7 +604,7 @@ Transform:
   m_Children:
   - {fileID: 4988410178843115239}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 4, z: 0}
 --- !u!114 &4988410177899337814
 MonoBehaviour:
@@ -579,13 +618,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 0}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410177931674405
 GameObject:
   m_ObjectHideFlags: 0
@@ -857,7 +901,7 @@ Transform:
   - {fileID: 4988410178324521082}
   - {fileID: 4988410178836973209}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: -174, z: 0}
 --- !u!114 &4988410177983091310
 MonoBehaviour:
@@ -871,13 +915,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 5
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 0}
   particle: {fileID: 0}
   audioSource: {fileID: 4988410178836973210}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410178096543695
 GameObject:
   m_ObjectHideFlags: 0
@@ -1864,7 +1913,7 @@ RectTransform:
   m_Children:
   - {fileID: 4988410178460665809}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
@@ -2370,7 +2419,7 @@ Transform:
   m_Children:
   - {fileID: 4988410178536183750}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 8
+  m_RootOrder: 9
   m_LocalEulerAnglesHint: {x: 0, y: 3, z: 0}
 --- !u!114 &4988410178495076663
 MonoBehaviour:
@@ -2384,13 +2433,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 0}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410178512169192
 GameObject:
   m_ObjectHideFlags: 0
@@ -2590,7 +2644,7 @@ Transform:
   m_Children:
   - {fileID: 4988410179775140667}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 2
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: -171, z: 0}
 --- !u!114 &4988410178540665829
 MonoBehaviour:
@@ -2604,13 +2658,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 1
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 4988410179107341964}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410178584775563
 GameObject:
   m_ObjectHideFlags: 0
@@ -2642,7 +2701,7 @@ Transform:
   m_Children:
   - {fileID: 4988410179338484734}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: -170, z: 0}
 --- !u!114 &4988410178584775573
 MonoBehaviour:
@@ -2656,13 +2715,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 3
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 4988410179542305603}
   interactableObject: {fileID: 0}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410178599102366
 GameObject:
   m_ObjectHideFlags: 0
@@ -3581,7 +3645,7 @@ Transform:
   m_Children:
   - {fileID: 4988410179043182220}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 10
+  m_RootOrder: 11
   m_LocalEulerAnglesHint: {x: 0, y: 1, z: 0}
 --- !u!114 &4988410178963495940
 MonoBehaviour:
@@ -3595,13 +3659,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 0}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410178994704692
 GameObject:
   m_ObjectHideFlags: 0
@@ -4319,7 +4388,7 @@ Transform:
   m_Children:
   - {fileID: 4988410179538647991}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 3
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: -172, z: 0}
 --- !u!114 &4988410179203498948
 MonoBehaviour:
@@ -4333,13 +4402,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 4
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 0}
   particle: {fileID: 5082969293678874887}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410179224096255
 GameObject:
   m_ObjectHideFlags: 0
@@ -4371,7 +4445,7 @@ Transform:
   m_Children:
   - {fileID: 4988410178512169193}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 6
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 0, y: 5, z: 0}
 --- !u!114 &4988410179224096249
 MonoBehaviour:
@@ -4385,13 +4459,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 0}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410179323437291
 GameObject:
   m_ObjectHideFlags: 0
@@ -4778,7 +4857,7 @@ Transform:
   - {fileID: 4988410178104790910}
   - {fileID: 4988410179617242087}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 4
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: -173, z: 0}
 --- !u!114 &4988410179344027371
 MonoBehaviour:
@@ -4792,13 +4871,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 1
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 4989112793785938863}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410179360095186
 GameObject:
   m_ObjectHideFlags: 0
@@ -4830,7 +4914,7 @@ Transform:
   m_Children:
   - {fileID: 4988410178599102367}
   m_Father: {fileID: 4988410177807068431}
-  m_RootOrder: 11
+  m_RootOrder: 12
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &4988410179360095196
 MonoBehaviour:
@@ -4844,13 +4928,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5632c69ca155d314285bb7e4dd3885f2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
+    value: 0
+  fullyClosed:
     value: 0
   videoPlayer: {fileID: 0}
   interactableObject: {fileID: 0}
   particle: {fileID: 0}
   audioSource: {fileID: 0}
+  grabbableObject: {fileID: 0}
 --- !u!1 &4988410179386038811
 GameObject:
   m_ObjectHideFlags: 0

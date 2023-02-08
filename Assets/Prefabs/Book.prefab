@@ -68,6 +68,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasAnimation: 1
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
     value: 0
@@ -281,6 +282,8 @@ MonoBehaviour:
   pages: []
   positioningSpeed: 3
   pageTurningSpeed: 150
+  changeMaterialAutomatically: 0
+  material: {fileID: 0}
   currentPage: -1
 --- !u!65 &2272941068097043742
 BoxCollider:
@@ -1524,6 +1527,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasAnimation: 1
+  automaticallyChangeMaterial: 0
   interactionType: 7
   fullyOpened:
     value: 0
@@ -2198,6 +2202,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
     value: 0
@@ -2341,6 +2346,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   hasAnimation: 0
+  automaticallyChangeMaterial: 0
   interactionType: 0
   fullyOpened:
     value: 0
