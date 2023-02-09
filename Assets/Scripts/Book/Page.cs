@@ -51,7 +51,7 @@ public class Page : MonoBehaviour
 
         if (hasAnimation) animator = GetComponent<Animator>();
 
-        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();  
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     private void Start()

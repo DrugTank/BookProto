@@ -12,7 +12,7 @@ public class BucketTrigger : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Grabbable"))
+        if (other.gameObject.layer == LayerMask.NameToLayer("Grabbable"))
         {
             audioSource.Play();
             particle.Play();

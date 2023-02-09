@@ -73,6 +73,11 @@ public class GrabbableSelection : MonoBehaviour
             {
                 grabbableObject.transform.localEulerAngles += new Vector3(0, rotationSpeed * Time.deltaTime, 0);
             }
+
+            else if (Input.GetKey(KeyCode.T))
+            {
+                grabbableObject.transform.localEulerAngles += new Vector3(0, 0, rotationSpeed * Time.deltaTime);
+            }
         }
     }
 

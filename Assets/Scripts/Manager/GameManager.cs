@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
 
     public bool lockCursor;
 
+    public Transform playerTf;
+    public ParticleSystem spawnParticle;
+
     private void Awake()
     {
         Instance = this;
