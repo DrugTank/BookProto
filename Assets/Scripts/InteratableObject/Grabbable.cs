@@ -37,6 +37,7 @@ public class Grabbable : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
+        // if kinematic is true, it won't be triggered
         if (collision.gameObject.layer == LayerMask.NameToLayer("Plane") && spawnObejct != null)
         {
             gameObject.SetActive(false);

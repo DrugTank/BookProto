@@ -51,7 +51,7 @@ public class GrabbableSelection : MonoBehaviour
 
     private void Selection()
     {
-        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, float.MaxValue))
+        if (Physics.Raycast(Camera.main.transform.position, Camera.main.transform.forward, out RaycastHit hit, float.MaxValue, grabbableLayer))
         {
             if (hit.transform.TryGetComponent(out Grabbable grabbable))
             {

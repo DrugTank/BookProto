@@ -24,8 +24,6 @@ public class Book : MonoBehaviour
 
     [Header("Material you wanna change all")]
     [SerializeField]
-    private bool changeMaterialAutomatically;
-    [SerializeField]
     private Material material;
 
     [Header("Starts with -1")]
@@ -273,7 +271,7 @@ public class Book : MonoBehaviour
 
     private void ChangeMaterial()
     {
-        if (changeMaterialAutomatically)
+        if (material != null)
         {
             for (int i = 0; i < totalPages; i++)
             {
