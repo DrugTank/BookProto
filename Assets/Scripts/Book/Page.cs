@@ -14,6 +14,14 @@ public enum InteractionType
     Grabbable
 }
 
+public enum SpecifyAnimatorLocation
+{ 
+    None,
+    Self,
+    Child
+}
+
+
 public class Page : MonoBehaviour
 {
     private Book book;
@@ -21,6 +29,8 @@ public class Page : MonoBehaviour
 
     [SerializeField]
     private bool hasAnimation;
+    [SerializeField]
+    private SpecifyAnimatorLocation specifyAnimatorLocation;    
 
     [Header("Page's material change")]
     public bool automaticallyChangeMaterial;
@@ -49,7 +59,19 @@ public class Page : MonoBehaviour
     {
         book = GetComponentInParent<Book>();
 
-        if (hasAnimation) animator = GetComponent<Animator>();
+        if (hasAnimation)
+        {
+            switch (specifyAnimatorLocation)
+            {
+                case SpecifyAnimatorLocation.Self:
+                    animator = GetComponent<Animator>();
+                    break;
+
+                case SpecifyAnimatorLocation.Child:
+                    animator = GetComponentInChildren<Animator>();
+                    break;
+            }
+        }
 
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
